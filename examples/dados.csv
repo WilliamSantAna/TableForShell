@@ -1,0 +1,35 @@
+id;nivel;posicao;id_menu;nomecss;nome;link
+9;1;1;0;principal;Principal;
+10;2;1;9;principal_principal;Principal;../principal/index.php
+11;1;3;0;cadastros;Cadastros;
+12;1;4;0;meusdados;Dados da conta;
+13;1;5;0;usuarios;Usuarios;
+14;1;7;0;equipe;Equipe;
+15;1;13;0;produtos;Produtos;
+16;1;18;0;matmerchan;Mat. Merchandising;
+17;1;14;0;pdv;PDV's;
+19;1;8;0;redes;Rede / Regionais;
+20;1;10;0;rotas;Rotas;
+21;1;11;0;registros;Registros Diarios;
+22;1;17;0;treinamentos;Treinamentos;
+23;1;16;0;books;Books;
+25;1;6;0;comunicacao;Comunicacao Interna;
+26;1;22;0;mensagemsms;Mensagens SMS;
+28;1;26;0;estatisticas;Estatisticas;
+29;1;15;0;relatorios;Relatorios;
+30;1;27;0;configuracoes;Configuracoes;
+31;1;28;0;monitoramento;Monitoramento;
+32;1;29;0;pesquisaopniao;Pesquisa de Opniao;
+33;2;1;11;cadastros_pf;Pessoa Fisica;../cadastros/pessoafisica.php
+34;2;2;11;cadastros_pj;Contratante;../cadastros/pessoajuridica.php
+35;2;1;12;meudados_matriz;Matriz;../meusdados/matriz.php
+36;2;2;12;meusdados_filiais;Filiais;../meusdados/filiais.php
+37;2;1;13;cadusuario;Usuarios;../usuarios/usuarios.php
+38;2;2;13;statususuario;Status;../usuarios/novo_status.php
+39;2;3;13;ultimoacesso;Acessos;../usuarios/novo_acesso.php
+40;2;5;13;excluirusuario;Excluir usuarios;../usuarios/novo_excluirusuario.php
+41;2;1;14;equipe_contratante;Por Contratante;../equipe/contratante.php
+42;2;2;14;equipe_gerente;Por Gerente;../equipe/gerente.php
+43;2;3;14;equipe_supervisor;Por Supervisor;../equipe/supervisor.php
+44;2;1;15;produtos_grupos;Grupos;../produtos/grupos.php
+45;2;2;15;produtos_adicionar;Adicionar;../produtos/adicionar.php
