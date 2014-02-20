@@ -1,229 +1,214 @@
 <?php
+    /*
+        Table For Shell v1.0
+        This class provides an easy way to print simple pre-formatted data on console.
+        A basic HTML table can also be printed. See examples to undestand better how it works.
 
-class TableForShell {
-    private $delay = 0;
-    private $mode = 'shell';
-    private $lf = '\r\n';
-    
-    public function setDelay($delay) {
-        $this->delay = $delay * 100000;
-    }
-    
-    public function setLf($lf) {
-        $this->lf = $lf;
-    }
+        Copyright (c) 2014, William Sant Ana
+        All rights reserved.
 
-    public function setMode($mode) {
-        $this->mode = $mode;
-        if ($this->mode == 'navigator') {
-            echo '<pre>' . $this->lf;
-        }
-    }
+        Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-    private function detectEnviroment() {
-        if (PHP_SAPI == 'cli') {
-            /* Rodando no shell */
-            $this->setMode('shell');
-        }
-        else {
-            /* Rodando no navegador */
-            $this->setMode('navigator');
-        }
-    }
-    
-    public function __construct($detectEnviroment = true) {
-        $this->setMode('shell');
-        $this->setDelay(0);
-        $this->setLf(chr(13) . chr(10));
-        if ($detectEnviroment) {
-            $this->detectEnviroment();
-        }
-    }
+        1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+        2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
-    public function cabecalho() {
-        $cabecalhos = func_get_args();
-        foreach ($cabecalhos as $cabecalho) {
-            $tracejado = "";
-            foreach ($cabecalho as $cells) {
-                $tracejado .= "+";
-                $tracejado .= str_repeat("-", $cells[1]);
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+        INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+        IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+        OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+        OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+        (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+    */
+
+    class TableForShell {
+        private $delay = 0;
+        private $mode = 'shell';
+        private $lf = '\r\n';
+
+        public function setDelay($delay) {
+            $this->delay = $delay * pow(10, 6);
+        }
+
+        public function setLf($lf) {
+            $this->lf = $lf;
+        }
+
+        public function setMode($mode) {
+            $this->mode = $mode;
+            if ($this->mode == 'navigator') {
+                echo '<pre>' . $this->lf;
             }
-            $tracejado .= "+";
-            
-            echo $tracejado . $this->lf;
-            
-            foreach ($cabecalho as $cells) {
-                $cells[2] = (isset($cells[2]) ? $cells[2] : 'L');
-                $this->cell($cells[0], $cells[1], $cells[2]);
-            }
-            $this->newline();
         }
-        echo $tracejado . $this->lf;
-    }
-    
-    public function rodape() {
-        $rodapes = func_get_args();
-        foreach ($rodapes as $rodape) {
-            $tracejado = "";
-            foreach ($rodape as $cells) {
-                $tracejado .= "+";
-                $tracejado .= str_repeat("-", $cells[1]);
-            }
-            $tracejado .= "+";
-            
-            echo $tracejado . $this->lf;
-            
-            foreach ($rodape as $cells) {
-                $cells[2] = (isset($cells[2]) ? $cells[2] : 'L');
-                $this->cell($cells[0], $cells[1], $cells[2]);
-            }
-            $this->newline();
-        }
-        echo $tracejado . $this->lf;
-    }
-    
-    public function line($cells) {
-        foreach ($cells as $cell) {
-            $cell[2] = (isset($cell[2]) ? $cell[2] : 'L');
-            $this->cell($cell[0], $cell[1], $cell[2]);
-        }
-        $this->newline();
-    }
-    
-    public function cell($texto, $width = 100, $align = 'L', $border = 1) {
-        $cell = array('texto' => $texto, 'width' => $width, 'align' => $align, 'border' => $border);
 
-        if ($border == 1) {
-            echo "|";
-        }
-        
-        echo " ";
-
-        if ($cell['align'] == 'L') {
-            if (strlen($cell['texto']) < ($cell['width'] - 1)) {
-                echo $cell['texto'] . str_repeat(" ", $cell['width'] - strlen($cell['texto']) - 2);
+        private function detectEnviroment() {
+            if (PHP_SAPI == 'cli') {
+                /* Running on console */
+                $this->setMode('shell');
             }
             else {
-                if ($cell['width'] >= 6) {
-                    echo substr($cell['texto'], 0, $cell['width'] - 6) . " ...";
+                /* Running on browser */
+                $this->setMode('navigator');
+            }
+        }
+
+        public function __construct($detectEnviroment = true) {
+            $this->setMode('shell');
+            $this->setDelay(0);
+            $this->setLf(chr(13) . chr(10));
+            if ($detectEnviroment) {
+                $this->detectEnviroment();
+            }
+        }
+
+        public function header() {
+            $headers = func_get_args();
+            foreach ($headers as $header) {
+                $dashes = "";
+                foreach ($header as $cells) {
+                    $dashes .= "+";
+                    $dashes .= str_repeat("-", $cells[1]);
+                }
+                $dashes .= "+";
+
+                echo $dashes . $this->lf;
+
+                foreach ($header as $cells) {
+                    $cells[2] = (isset($cells[2]) ? $cells[2] : 'L');
+                    $this->cell($cells[0], $cells[1], $cells[2]);
+                }
+                $this->newline();
+            }
+            echo $dashes . $this->lf;
+        }
+
+        public function footer() {
+            $footers = func_get_args();
+            foreach ($footers as $footer) {
+                $dashes = "";
+                foreach ($footer as $cells) {
+                    $dashes .= "+";
+                    $dashes .= str_repeat("-", $cells[1]);
+                }
+                $dashes .= "+";
+
+                echo $dashes . $this->lf;
+
+                foreach ($footer as $cells) {
+                    $cells[2] = (isset($cells[2]) ? $cells[2] : 'L');
+                    $this->cell($cells[0], $cells[1], $cells[2]);
+                }
+                $this->newline();
+            }
+            echo $dashes . $this->lf;
+        }
+
+        public function line($cells) {
+            foreach ($cells as $cell) {
+                $cell[2] = (isset($cell[2]) ? $cell[2] : 'L');
+                $this->cell($cell[0], $cell[1], $cell[2]);
+            }
+            $this->newline();
+        }
+
+        public function cell($text, $width = 100, $align = 'L', $border = 1) {
+            $cell = array('text' => $text, 'width' => $width, 'align' => $align, 'border' => $border);
+
+            if ($border == 1) {
+                echo "|";
+            }
+
+            echo " ";
+
+            if ($cell['align'] == 'L') {
+                if (strlen($cell['text']) < ($cell['width'] - 1)) {
+                    echo $cell['text'] . str_repeat(" ", $cell['width'] - strlen($cell['text']) - 2);
                 }
                 else {
-                    echo substr($cell['texto'], 0, $cell['width'] - 2);
+                    if ($cell['width'] >= 6) {
+                        echo substr($cell['text'], 0, $cell['width'] - 6) . " ...";
+                    }
+                    else {
+                        echo substr($cell['text'], 0, $cell['width'] - 2);
+                    }
                 }
+                echo " ";
             }
-            echo " ";
-        }
-        else if ($cell['align'] == 'C') {
-            if (strlen($cell['texto']) >= ($cell['width'] - 1)) {
-                $cell['texto'] = substr($cell['texto'], 0, $cell['width'] - 6) . " ...";
+            else if ($cell['align'] == 'C') {
+                if (strlen($cell['text']) >= ($cell['width'] - 1)) {
+                    $cell['text'] = substr($cell['text'], 0, $cell['width'] - 6) . " ...";
+                }
+
+                $begin = floor($cell['width'] / 2) - floor(strlen($cell['text']) / 2) - 1;
+                echo str_repeat(" ", $begin);
+                echo $cell['text'];
+                echo str_repeat(" ", $cell['width'] - ($begin + strlen($cell['text'])) - 2);
+                echo " ";
             }
+            else if ($cell['align'] == 'R') {
+                if (strlen($cell['text']) >= ($cell['width'] - 1)) {
+                    $cell['text'] = "... " . substr($cell['text'], 0, $cell['width'] - 6);
+                }
 
-            $begin = floor($cell['width'] / 2) - floor(strlen($cell['texto']) / 2) - 1;
-            echo str_repeat(" ", $begin);
-            echo $cell['texto'];
-            echo str_repeat(" ", $cell['width'] - ($begin + strlen($cell['texto'])) - 2);
-            echo " ";
-        }
-        else if ($cell['align'] == 'R') {
-            if (strlen($cell['texto']) >= ($cell['width'] - 1)) {
-                $cell['texto'] = "... " . substr($cell['texto'], 0, $cell['width'] - 6);
+                $begin = $cell['width'] - strlen($cell['text']) - 2;
+                echo str_repeat(" ", $begin);
+                echo $cell['text'] . " ";
             }
-
-            $begin = $cell['width'] - strlen($cell['texto']) - 2;
-            echo str_repeat(" ", $begin);
-            echo $cell['texto'] . " ";
+            @usleep($this->delay);
         }
-        @usleep($this->delay);
-    }
-    
-    public function newline($border = 1) {
-        if ($border == 1) {
-            echo "|";
-        }
-        echo $this->lf;
-    }
-    
-    public function enter() {
-        echo $this->lf;
-    }
-    
-    
-    
-    public function tableHTMLToShell($html) {
-        $widthTabela = 0;
-        $arrayTabela = array();
-        
-        $dom = new DOMDocument();
-        $nivel_atual_erro = error_reporting(0);
-        $isLoaded = $dom->loadHTML($html);
-        error_reporting($nivel_atual_erro);
-        
-        $tables = $dom->getElementsByTagName("table");
-        
-        
-        for ($a = 0; $a < $tables->length; $a++) {
-            $temLinhas = false;
-            $arrayTabela = array();
-            
-            
-            /**
-             * ****************************************************************************************************************************
-             */
-            /**
-             * Parsing da tabela para arrays
-             */
-            $table = $tables->item($a);
-            if ($table->hasChildNodes()) {
-                $tr = $table->firstChild;
-                do {
-                    
-                    if ($tr->hasChildNodes()) {
-                        
-                        $cells = array();
-                        
-                        $childs = $tr->childNodes;
-                        for ($c = 0; $c < $childs->length; $c++) {
-                            $child = $childs->item($c);
-                            if ($child->nodeName != "#text") {
-                                $texto = $child->nodeValue;
-                                $align = "L";
-                                $width = "";
-                                $colspan = "0";
 
-                                /* Pegando os atributos do TD */
-                                $trs = $child->attributes;
-                                if (!is_null($trs)) {
+        public function newline($border = 1) {
+            if ($border == 1) {
+                echo "|";
+            }
+            echo $this->lf;
+        }
+
+        public function enter() {
+            echo $this->lf;
+        }
+
+        public function tableHTMLToShell($html) {
+            $tableArray = array();
+
+            $dom = new DOMDocument();
+            $actualLevelError = error_reporting(0);
+            $dom->loadHTML($html);
+            error_reporting($actualLevelError);
+
+            $tables = $dom->getElementsByTagName("table");
+
+            for ($a = 0; $a < $tables->length; $a++) {
+                $tableArray = array();
+
+                /**
+                 * Parsing the table to array
+                 */
+                $table = $tables->item($a);
+                if ($table->hasChildNodes()) {
+                    $tr = $table->firstChild;
+                    do {
+                        if ($tr->hasChildNodes()) {
+                            $cells = array();
+                            $childs = $tr->childNodes;
+                            for ($c = 0; $c < $childs->length; $c++) {
+                                $child = $childs->item($c);
+                                if ($child->nodeName != "#text") {
+                                    $text = $child->nodeValue;
                                     $align = "L";
-                                    for ($d = 0; $d < $trs->length; $d++) {
-                                        $attr = $trs->item($d);
-                                        /* Parsing do align */
-                                        if ($attr->name == "align") {
-                                            switch ($attr->value) {
-                                                case "center":
-                                                    $align = "C";
-                                                    break;
-                                                case "right":
-                                                    $align = "R";
-                                                    break;
-                                            }
-                                        }
-                                        /* Parsing do width */
-                                        if ($attr->name == "width") {
-                                            $width = $attr->value;
-                                        }
-                                        /* Parsing dos styles */
-                                        if ($attr->name == "style") {
-                                            $styleAttr = $attr->value;
-                                            $styleDesn = explode(";", $styleAttr);
-                                            $style = array();
-                                            foreach ($styleDesn as $val) {
-                                                if (strpos($val, ":") !== false) {
-                                                    list($def, $vlr) = explode(":", $val);
-                                                    $style[$def] = trim($vlr);
-                                                }
-                                            }
-                                            if (isset($style['text-align'])) {
-                                                switch ($style['text-align']) {
+                                    $width = "";
+                                    $colspan = "0";
+
+                                    /* Getting some basic <td> attributes */
+                                    /* More attrs have to be implemented */
+                                    $trs = $child->attributes;
+                                    if (!is_null($trs)) {
+                                        $align = "L";
+                                        for ($d = 0; $d < $trs->length; $d++) {
+                                            $attr = $trs->item($d);
+
+                                            /* Parsing alignments */
+                                            if ($attr->name == "align") {
+                                                switch ($attr->value) {
                                                     case "center":
                                                         $align = "C";
                                                         break;
@@ -233,194 +218,194 @@ class TableForShell {
                                                 }
                                             }
 
-                                            /* Verificando se ha algum text-transform */
-                                            if (isset($style['text-transform'])) {
-                                                switch ($style['text-transform']) {
-                                                    case "capitalize": case "uppercase":
-                                                        $texto = strtoupper($texto);
-                                                        break;
-                                                    case "lowercase":
-                                                        $texto = strtolower($texto);
-                                                        break;
-                                                }
+                                            /* Parsing width */
+                                            if ($attr->name == "width") {
+                                                $width = $attr->value;
                                             }
 
-                                            /* Verificando se ha algum direction */
-                                            if (isset($style['direction'])) {
-                                                switch ($style['direction']) {
-                                                    case "rtl": 
-                                                        $texto = implode("", array_reverse(str_split($texto)));
-                                                        break;
-                                                }
+                                            /* Colspan */
+                                            if ($attr->name == "colspan") {
+                                                $colspan = (is_numeric($attr->value) ? $attr->value : 0);
                                             }
 
-                                            /* Verificando se ha algum width */
-                                            if (isset($style['width'])) {
-                                                $width = $style['width'];
+                                            /* Parsing styles */
+                                            if ($attr->name == "style") {
+                                                $styleAttr = $attr->value;
+                                                $styleDesn = explode(";", $styleAttr);
+                                                $style = array();
+                                                foreach ($styleDesn as $val) {
+                                                    if (strpos($val, ":") !== false) {
+                                                        list($def, $vlr) = explode(":", $val);
+                                                        $style[$def] = trim($vlr);
+                                                    }
+                                                }
+
+                                                /* text-aling */
+                                                if (isset($style['text-align'])) {
+                                                    switch ($style['text-align']) {
+                                                        case "center":
+                                                            $align = "C";
+                                                            break;
+                                                        case "right":
+                                                            $align = "R";
+                                                            break;
+                                                    }
+                                                }
+
+                                                /* text-transform */
+                                                if (isset($style['text-transform'])) {
+                                                    switch ($style['text-transform']) {
+                                                        case "capitalize": case "uppercase":
+                                                            $text = strtoupper($text);
+                                                            break;
+                                                        case "lowercase":
+                                                            $text = strtolower($text);
+                                                            break;
+                                                    }
+                                                }
+
+                                                /* direction */
+                                                if (isset($style['direction'])) {
+                                                    switch ($style['direction']) {
+                                                        case "rtl": 
+                                                            $text = implode("", array_reverse(str_split($text)));
+                                                            break;
+                                                    }
+                                                }
+
+                                                /* width */
+                                                if (isset($style['width'])) {
+                                                    $width = $style['width'];
+                                                }
                                             }
-                                        }
-                                        /* Parsing do colspan */
-                                        if ($attr->name == "colspan") {
-                                            $colspan = (is_numeric($attr->value) ? $attr->value : 0);
                                         }
                                     }
+
+                                    $cellType = ($child->nodeName == "th" ? "header" : ($child->nodeName == "tf" ? "footer" : "line")  );
+                                    $cells[] = array($text, $width, $align, $cellType, $colspan);
                                 }
-                                
-                                $tipoCell = ($child->nodeName == "th" ? "header" : ($child->nodeName == "tf" ? "footer" : "line")  );
-                                $cells[] = array($texto, $width, $align, $tipoCell, $colspan);
                             }
+
+                            $tableArray[] = $cells;
                         }
-                        
-                        $arrayTabela[] = $cells;
-                    }
-                } while ($tr = $tr->nextSibling);
-            }
-            
+                    } while ($tr = $tr->nextSibling);
+                }
 
-            /**
-             * ****************************************************************************************************************************
-             */
-            /* 
-             * Com as linhas da tabela montada, vamos analisar os widths de cada coluna e o width da tabela inteira 
-             *      para dar widths as colunas que nao foram informados, e tambem os colspan adequados
-             */
-            
-            
-            
-            /* Corrigindo o width de cada coluna, para padronizar a tabela */
-            $colsWidth = array();
-            foreach ($arrayTabela as $linhas) {
-                foreach ($linhas as $i => $colunas) {
-                    if ( is_numeric($colunas[1]) ) {
-                        $colsWidth[$i] = @max($colsWidth[$i], $colunas[1]);
-                    }
-                    else {
-                        $colsWidth[$i] = @max($colsWidth[$i], strlen($colunas[0]) + 2);
-                    }
-                }
-            }
-            $arrayTabelaAux = $arrayTabela;
-            foreach ($arrayTabela as $l => $linhas) {
-                foreach ($linhas as $c => $colunas) {
-                    $arrayTabelaAux[$l][$c] = array($colunas[0], $colsWidth[$c], $colunas[2], $colunas[3]);
-                }
-            }
-            $arrayTabela = $arrayTabelaAux;
-            unset($arrayTabelaAux);
-            /* Fim da correcao dos widths das colunas */
-            
-            
-            
-            
-            
-            
-            
-            /**
-             * ****************************************************************************************************************************
-             */
-            /**
-             * Escrevendo a tabela
-             */
-            
-            /* Abrindo a tabela */
-            $headers = array();
-            $lines = array();
-            $footers = array();
-            foreach ($arrayTabela as $l => $linhas) {
-                foreach ($linhas as $c => $colunas) {
-                    if ($colunas[3] == "header") {
-                        $headers[$l] = $linhas;
-                    }
-                    else if ($colunas[3] == "line") {
-                        $lines[$l] = $linhas;
-                    }
-                    if ($colunas[3] == "footer") {
-                        $footers[$l] = $linhas;
-                    }
-                }
-            }
-            
+                /* 
+                 * At this point, table lines were fetched. 
+                 * We can analyze each column width and the whole table width 
+                 * to measure each non-setted width and the appropriated colspan
+                 */
 
-            /* Abrindo a tabela */
-            if (count($arrayTabela) > 0) {
-                $lastCell = $arrayTabela[0];
-                $tracejado = "";
-                foreach ($lastCell as $cell) {
-                    $tracejado .= "+";
-                    $tracejado .= str_repeat("-", $cell[1]);
+                /* Recalculating each width to standardize the table */
+                $colsWidth = array();
+                foreach ($tableArray as $lines) {
+                    foreach ($lines as $i => $columns) {
+                        if ( is_numeric($columns[1]) ) {
+                            $colsWidth[$i] = @max($colsWidth[$i], $columns[1]);
+                        }
+                        else {
+                            $colsWidth[$i] = @max($colsWidth[$i], strlen($columns[0]) + 2);
+                        }
+                    }
                 }
-                $tracejado .= "+";
-                echo $tracejado . $this->lf;
-            }
-            
-            
-            
-            if (count($headers)) {
-                /* Imprimindo os headers */
-                foreach ($headers as $line) {
-                    $this->line($line);
+                $tableArrayAux = $tableArray;
+                foreach ($tableArray as $l => $lines) {
+                    foreach ($lines as $c => $columns) {
+                        $tableArrayAux[$l][$c] = array($columns[0], $colsWidth[$c], $columns[2], $columns[3]);
+                    }
                 }
-                /* Fechando os headers */
-                if (count($arrayTabela) > 0) {
-                    $lastCell = $line;
-                    $tracejado = "";
+                $tableArray = $tableArrayAux;
+                unset($tableArrayAux);
+
+                /**
+                 * Plotting the table
+                 */
+
+                $headers = array();
+                $lines = array();
+                $footers = array();
+                foreach ($tableArray as $l => $linesx) {
+                    foreach ($linesx as $c => $columns) {
+                        if ($columns[3] == "header") {
+                            $headers[$l] = $linesx;
+                        }
+                        else if ($columns[3] == "line") {
+                            $lines[$l] = $linesx;
+                        }
+                        if ($columns[3] == "footer") {
+                            $footers[$l] = $linesx;
+                        }
+                    }
+                }
+
+                if (count($tableArray) > 0) {
+                    $lastCell = $tableArray[0];
+                    $dashes = "";
                     foreach ($lastCell as $cell) {
-                        $tracejado .= "+";
-                        $tracejado .= str_repeat("-", $cell[1]);
+                        $dashes .= "+";
+                        $dashes .= str_repeat("-", $cell[1]);
                     }
-                    $tracejado .= "+";
-                    echo $tracejado . $this->lf;
+                    $dashes .= "+";
+                    echo $dashes . $this->lf;
+                }
+
+
+
+                if (count($headers)) {
+                    /* plotting the headers */
+                    foreach ($headers as $line) {
+                        $this->line($line);
+                    }
+                    if (count($tableArray) > 0) {
+                        $lastCell = $line;
+                        $dashes = "";
+                        foreach ($lastCell as $cell) {
+                            $dashes .= "+";
+                            $dashes .= str_repeat("-", $cell[1]);
+                        }
+                        $dashes .= "+";
+                        echo $dashes . $this->lf;
+                    }
+                }
+
+
+                if (count($lines) > 0) {
+                    /* plotting all <tr>s */
+                    foreach ($lines as $line) {
+                        $this->line($line);
+                    }
+
+                    $lastCell = $line;
+                    $dashes = "";
+                    foreach ($lastCell as $cell) {
+                        $dashes .= "+";
+                        $dashes .= str_repeat("-", $cell[1]);
+                    }
+                    $dashes .= "+";
+                    echo $dashes . $this->lf;
+                }
+
+
+
+                if (count($footers)) {
+                    /* plotting footers */
+                    foreach ($footers as $line) {
+                        $this->line($line);
+                    }
+                }
+
+                /* closing the table */
+                if (count($tableArray) > 0) {
+                    $lastCell = $tableArray[count($tableArray) - 1];
+                    $dashes = "";
+                    foreach ($lastCell as $cell) {
+                        $dashes .= "+";
+                        $dashes .= str_repeat("-", $cell[1]);
+                    }
+                    $dashes .= "+";
+                    echo $dashes . $this->lf;
                 }
             }
-            
-            
-            if (count($lines) > 0) {
-                /* Imprimindo todos os <tr> */
-                foreach ($lines as $line) {
-                    $this->line($line);
-                }
-                
-                /* Fechando as linhas */
-                $lastCell = $line;
-                $tracejado = "";
-                foreach ($lastCell as $cell) {
-                    $tracejado .= "+";
-                    $tracejado .= str_repeat("-", $cell[1]);
-                }
-                $tracejado .= "+";
-                echo $tracejado . $this->lf;
-            }
-            
-            
-            
-            if (count($footers)) {
-                /* Imprimindo os footers */
-                foreach ($footers as $line) {
-                    $this->line($line);
-                }
-            }
-            
-            
-            /* Fechando a tabela */
-            if (count($arrayTabela) > 0) {
-                $lastCell = $arrayTabela[count($arrayTabela) - 1];
-                $tracejado = "";
-                foreach ($lastCell as $cell) {
-                    $tracejado .= "+";
-                    $tracejado .= str_repeat("-", $cell[1]);
-                }
-                $tracejado .= "+";
-                echo $tracejado . $this->lf;
-            }
-            
-            
         }
     }
-    
-    
-    /** 
-     * Metodos privados
-     */
-    
-    
-}

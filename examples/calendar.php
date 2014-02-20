@@ -2,31 +2,33 @@
 
 include dirname(__FILE__) . DIRECTORY_SEPARATOR . '../tableForShell.php';
 $tableForShell = new TableForShell();
-$tableForShell->setDelay(0.1);
+//$tableForShell->setDelay(0.1);
 
 foreach (range(1, 12) as $mes) {
     $dia = 1;
-    $diaSemanaInicial = date("w", mktime(0,0,0,$mes,1));
+    $ano = date('Y');
+    $mktime = mktime(0,0,0,$mes,1,$ano);
+    $diaSemanaInicial = date("w", $mktime);
 
 
-    $tableForShell->cabecalho(
+    $tableForShell->header(
         array(
-            array('Mes ' . $mes . ' - 2013', 76, 'C')
+            array(sprintf("%s %04s", date('F', $mktime), $ano), 76, 'C')
         ),
         array(
-            array('Dom', 10, 'C'),
-            array('Seg', 10, 'C'),
-            array('Ter', 10, 'C'),
-            array('Qua', 10, 'C'),
-            array('Qui', 10, 'C'),
-            array('Sex', 10, 'C'),
-            array('Sab', 10, 'C'),
+            array('Sun', 10, 'C'),
+            array('Mon', 10, 'C'),
+            array('Tue', 10, 'C'),
+            array('Wed', 10, 'C'),
+            array('Thu', 10, 'C'),
+            array('Fri', 10, 'C'),
+            array('Sat', 10, 'C'),
         )
     );
 
     $begin = false;
     $end = false;
-    foreach (range(0, 4) as $linhas) {
+    foreach (range(0, 5) as $linhas) {
         foreach (range(0, 6) as $colunas) {
             if ($linhas == 0 && $colunas == $diaSemanaInicial) {
                 $begin = true;
@@ -43,9 +45,11 @@ foreach (range(1, 12) as $mes) {
                 $tableForShell->cell('', 10, 'C');
             }
         }
+        if ($end) break;
         $tableForShell->newline();
     }
-    $tableForShell->rodape(array(array('', 76, 'R')));
+    $tableForShell->newline();
+    $tableForShell->footer(array(array('-', 76, 'C')));
     $tableForShell->enter();
     $tableForShell->enter();
     $tableForShell->enter();
