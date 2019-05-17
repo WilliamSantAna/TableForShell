@@ -5,7 +5,7 @@
     $tableForShell = new TableForShell();
 
     // Set a delay if you want to see some 'animation' on output
-    $tableForShell->setDelay(0.1);
+    //$tableForShell->setDelay(0.1);
 
     foreach (range(1, 12) as $mes) {
         $day = 1;

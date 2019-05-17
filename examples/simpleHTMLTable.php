@@ -32,9 +32,4 @@
     $htmlExpected .= '| Listed Address   | Real addresses      | Bogus phone number |' . $tableForShell->getLf();
     $htmlExpected .= '+------------------+---------------------+--------------------+';
 
-    ob_start();
     $tableForShell->tableHTMLToShell($htmlToPrint);
-    $htmlPrinted = ob_get_contents();
-    ob_end_clean();
-
-    echo strlen($htmlExpected) . ' - ' . strlen($htmlPrinted);

@@ -2,6 +2,7 @@
     "name": "williamsantana/tableforshell",
     "description": "Print HTML tables (and so on) on shell enviroments",
     "type": "library",
+    "version": "1.0.0",
     "authors": [{
         "name": "William Sant Ana",
         "email": "williamprogphp@yahoo.com.br"
