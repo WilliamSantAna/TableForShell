@@ -1,12 +1,12 @@
 <?php
+    require dirname(__FILE__) . '/../vendor/autoload.php';
+    use WilliamSantAna\TableForShell\TableForShell;
 
     $counter1 = 0;
     $counter2 = 0;
     $counter3 = 0;
     $counter4 = 0;
     $generalSum = 0;
-
-    include dirname(__FILE__) . DIRECTORY_SEPARATOR . '../tableForShell.php';
 
     foreach (range(2,6,2) as $j) { 
         $tableForShell = new TableForShell();

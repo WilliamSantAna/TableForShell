@@ -1,4 +1,4 @@
-id;nivel;posicao;id_menu;nomecss;nome;link
+id;level;position;id_menu;namecss;name;link
 9;1;1;0;principal;Principal;
 10;2;1;9;principal_principal;Principal;../principal/index.php
 11;1;3;0;cadastros;Cadastros;

@@ -4,12 +4,15 @@
     "type": "library",
     "authors": [{
         "name": "William Sant Ana",
-        "email": "contato@williamdeveloper.com.br"
+        "email": "williamprogphp@yahoo.com.br"
     }],
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "TableForShell\\": ""
+            "WilliamSantAna\\TableForShell\\": ""
         }
+    },
+    "require": {
+        "phpunit/phpunit": "^5.7"
     }
 }

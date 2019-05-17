@@ -1,6 +1,7 @@
 <?php
+    require dirname(__FILE__) . '/../vendor/autoload.php';
+    use WilliamSantAna\TableForShell\TableForShell;
     
-    include dirname(__FILE__) . DIRECTORY_SEPARATOR . '../tableForShell.php';
     $tableForShell = new TableForShell();
 
     

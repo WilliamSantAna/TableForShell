@@ -1,10 +1,13 @@
 <?php
-
+    require dirname(__FILE__) . '/../vendor/autoload.php';
+    use WilliamSantAna\TableForShell\TableForShell;
+    
     $time = microtime(true);
-    include dirname(__FILE__) . DIRECTORY_SEPARATOR . '../tableForShell.php';
 
     $tableForShell = new TableForShell();
-    $tableForShell->setDelay(0.15);
+    
+    // Set a delay if you want to see some 'animation' on output
+    //$tableForShell->setDelay(0.15);
 
     $handle = fopen(dirname(__FILE__) . DIRECTORY_SEPARATOR . "csvData.csv", "r");
     $row = 1;

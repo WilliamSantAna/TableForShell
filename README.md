@@ -28,6 +28,21 @@ Clone or download the package
 ```
 https://github.com/WilliamSantAna/TableForShell.git
 ```
+## Usage
+
+With hands-on a HTML Table you can do something like this:
+
+```
+$htmlString = file_get_contents('some-html-table.html');
+$TableForShell = new TableForShell();
+$TableForShell->tableHTMLToShell($htmlString);
+```
+
+Via shell you can run by simply:
+
+```
+php 
+```
 
 ## Running the tests
 
