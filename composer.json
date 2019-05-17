@@ -1,0 +1,15 @@
+{
+    "name": "williamsantana/tableforshell",
+    "description": "Print HTML tables (and so on) on shell enviroments",
+    "type": "library",
+    "authors": [{
+        "name": "William Sant Ana",
+        "email": "contato@williamdeveloper.com.br"
+    }],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TableForShell\\": ""
+        }
+    }
+}
